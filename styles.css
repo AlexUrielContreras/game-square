@@ -1,0 +1,65 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+	background: hsla(313, 96%, 53%, 1);
+	background: linear-gradient(
+		45deg,
+		hsla(313, 96%, 53%, 1) 0%,
+		hsla(0, 5%, 28%, 1) 0%,
+		hsla(193, 73%, 53%, 1) 100%
+	);
+}
+
+header {
+	display: flex;
+	justify-content: space-around;
+	align-items: flex-end;
+}
+
+.header-title {
+	font-size: 3.2rem;
+}
+
+#active-game {
+	font-size: 1.8rem;
+}
+
+main {
+	text-align: center;
+	margin-top: 4%;
+}
+
+.startGame-btn {
+	position: absolute;
+	bottom: 50%;
+	left: 50%;
+	padding: 10px 50px;
+	font-size: 1.2rem;
+	font-weight: bold;
+	background: none;
+	transform: translate(-50%, -50%);
+}
+
+.current-round {
+	font-size: 3rem;
+}
+
+.game-board {
+	display: grid;
+	justify-content: center;
+	margin-top: 3%;
+}
+
+.grid-tile {
+	width: 75px;
+	height: 75px;
+	border: 2px solid black;
+}
