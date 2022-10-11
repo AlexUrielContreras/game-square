@@ -7,8 +7,8 @@ let round = 0;
 let lives = 3;
 const numOfGridTiles = [4, 6, 8];
 
-const displayBoard = (e) => {
-	$gameBoard.style.gridTemplateColumns = `repeat(${numOfGridTiles[round]}, 75px)`;
+const displayBoard = () => {
+	$gameBoard.style.gridTemplateColumns = `repeat(${numOfGridTiles[round]}, 80px)`;
 	$startGameBtn.style.display = 'none';
 	$currentRound.textContent = `Round ${round + 1}`;
 
@@ -21,6 +21,29 @@ const displayBoard = (e) => {
 	}
 
 	startGame();
+};
+
+const startGame = () => {
+	// array populated by random numbers
+	const gridArr = [];
+	const multiplier = numOfGridTiles[round] + numOfGridTiles[round];
+
+	for (let i = 0; i < multiplier; i++) {
+		let randomNum = Math.floor(Math.random() * multiplier);
+
+		let isNumberInArr = gridArr.includes(randomNum);
+
+		if (isNumberInArr) {
+			i--;
+		} else {
+			gridArr.push(randomNum);
+		}
+	}
+	// color the tiles with the arr numbers
+
+	// capture user clicks and color tile
+	// insert user click number in arr
+	// match random num arr to user click array
 };
 
 $startGameBtn.addEventListener('click', displayBoard);
