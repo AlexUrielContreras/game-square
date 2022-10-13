@@ -1,19 +1,19 @@
 const $gameBoard = document.querySelector('.game-board');
 const $startGameBtn = document.querySelector('.startGame-btn');
-const $activeGame = document.querySelector('#active-game');
+const $activeGameTitle = document.querySelector('#active-game');
 const $currentRound = document.querySelector('.current-round');
 
-let round = 0;
+let round = 2;
 let lives = 3;
-const numOfGridTiles = [4, 6, 8];
+const gridSize = [4, 6, 8];
 
 const displayBoard = () => {
-	$gameBoard.style.gridTemplateColumns = `repeat(${numOfGridTiles[round]}, 80px)`;
+	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round]}, 80px)`;
 	$startGameBtn.style.display = 'none';
 	$currentRound.textContent = `Round ${round + 1}`;
 
-	for (let col = 0; col < numOfGridTiles[round]; col++) {
-		for (let row = 0; row < numOfGridTiles[round]; row++) {
+	for (let col = 0; col < gridSize[round]; col++) {
+		for (let row = 0; row < gridSize[round]; row++) {
 			const tileEl = document.createElement('div');
 			tileEl.classList.add('grid-tile');
 			$gameBoard.append(tileEl);
@@ -28,7 +28,7 @@ const startGame = () => {
 	const gridTiles = makeGrid();
 
 	// color the tiles with the arr numbers
-	colorTiles(sort(gridTiles));
+	colorTiles(bubbleSort(gridTiles));
 
 	// capture user clicks and color tile
 
@@ -39,10 +39,10 @@ const startGame = () => {
 
 const makeGrid = () => {
 	const gridArr = [];
-	const multiplier = numOfGridTiles[round] + numOfGridTiles[round];
-	const range = multiplier * 2;
+	const range = gridSize[round] * gridSize[round];
+	const runTime = gridSize[round] * 2;
 
-	for (let i = 0; i < multiplier; i++) {
+	for (let i = 0; i < runTime; i++) {
 		let randomNum = Math.floor(Math.random() * range);
 		let isNumberInArr = gridArr.includes(randomNum);
 
@@ -57,20 +57,30 @@ const makeGrid = () => {
 };
 
 const colorTiles = (coloredTiles) => {
-	console.log(coloredTiles);
 	const tileList = document.querySelectorAll('.grid-tile');
-	console.log(tileList);
+
+	let newArr = [];
 
 	for (let i = 0; i < tileList.length; i++) {
 		let exist = coloredTiles.includes(i);
 
 		if (exist) {
-			tileList[i].classList.add('active');
+			newArr.push(tileList[i]);
 		}
 	}
+
+	let count = 0;
+	let myInterval = setInterval(() => {
+		newArr[count].classList.add('active');
+		count++;
+
+		if (count > newArr.length) {
+			clearInterval(myInterval);
+		}
+	}, 1000);
 };
 
-function sort(arr) {
+const bubbleSort = (arr) => {
 	let sorted = false;
 
 	while (!sorted) {
@@ -81,14 +91,12 @@ function sort(arr) {
 
 				arr[i] = arr[i + 1];
 				arr[i + 1] = temp;
-
 				sorted = false;
 			}
 		}
 	}
-
 	return arr;
-}
+};
 
 $startGameBtn.addEventListener('click', displayBoard);
 
