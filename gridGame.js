@@ -3,20 +3,27 @@ const $startGameBtn = document.querySelector('.startGame-btn');
 const $activeGameTitle = document.querySelector('#active-game');
 const $currentRound = document.querySelector('.current-round');
 
-let round = 2;
+let round = 0;
 let lives = 3;
 const gridSize = [4, 6, 8];
 
 const displayBoard = () => {
+	document.title = 'Grid Game';
+	$activeGameTitle.textContent = 'Grid Game';
 	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round]}, 80px)`;
 	$startGameBtn.style.display = 'none';
 	$currentRound.textContent = `Round ${round + 1}`;
 
+	let count = 0;
 	for (let col = 0; col < gridSize[round]; col++) {
 		for (let row = 0; row < gridSize[round]; row++) {
 			const tileEl = document.createElement('div');
+
+			tileEl.dataset.tileId = count;
+			tileEl.addEventListener('click', userClick);
 			tileEl.classList.add('grid-tile');
 			$gameBoard.append(tileEl);
+			count++;
 		}
 	}
 
@@ -25,10 +32,10 @@ const displayBoard = () => {
 
 const startGame = () => {
 	// array populated by random numbers
-	const gridTiles = makeGrid();
+	const gridTilesArr = coloredTilesArr();
 
 	// color the tiles with the arr numbers
-	colorTiles(bubbleSort(gridTiles));
+	colorTiles(bubbleSort(gridTilesArr));
 
 	// capture user clicks and color tile
 
@@ -37,13 +44,13 @@ const startGame = () => {
 	// match random num arr to user click array
 };
 
-const makeGrid = () => {
+const coloredTilesArr = () => {
 	const gridArr = [];
-	const range = gridSize[round] * gridSize[round];
-	const runTime = gridSize[round] * 2;
+	const randomNumberRange = gridSize[round] * gridSize[round];
+	const loopRunTime = gridSize[round] * 2;
 
-	for (let i = 0; i < runTime; i++) {
-		let randomNum = Math.floor(Math.random() * range);
+	for (let i = 0; i < loopRunTime; i++) {
+		let randomNum = Math.floor(Math.random() * randomNumberRange);
 		let isNumberInArr = gridArr.includes(randomNum);
 
 		if (isNumberInArr) {
@@ -57,6 +64,7 @@ const makeGrid = () => {
 };
 
 const colorTiles = (coloredTiles) => {
+	console.log(coloredTiles);
 	const tileList = document.querySelectorAll('.grid-tile');
 
 	let newArr = [];
@@ -74,8 +82,12 @@ const colorTiles = (coloredTiles) => {
 		newArr[count].classList.add('active');
 		count++;
 
-		if (count > newArr.length) {
+		if (count >= newArr.length) {
 			clearInterval(myInterval);
+
+			setTimeout(() => {
+				removeColorFromTiles(newArr);
+			}, 3500);
 		}
 	}, 1000);
 };
@@ -98,9 +110,16 @@ const bubbleSort = (arr) => {
 	return arr;
 };
 
-$startGameBtn.addEventListener('click', displayBoard);
+const removeColorFromTiles = (coloredArr) => {
+	console.log(coloredArr);
+	coloredArr.forEach((tile) => {
+		tile.classList.remove('active');
+	});
+};
 
-// (() => {
-// 	document.title = 'Grid Game';
-// 	$activeGame.textContent = 'Grid Game';
-// })();
+const userClick = (e) => {
+	console.log(e.target.dataset.tileId);
+	console.log('click');
+};
+
+$startGameBtn.addEventListener('click', displayBoard);
