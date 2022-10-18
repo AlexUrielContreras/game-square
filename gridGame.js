@@ -3,16 +3,18 @@ const $startGameBtn = document.querySelector('.startGame-btn');
 const $activeGameTitle = document.querySelector('#active-game');
 const $currentRound = document.querySelector('.current-round');
 
-let round = 0;
+let round = 2;
 let lives = 3;
 const gridSize = [4, 6, 8];
+const correctGridTile = [];
 
 const displayBoard = () => {
 	document.title = 'Grid Game';
 	$activeGameTitle.textContent = 'Grid Game';
-	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round]}, 80px)`;
+
 	$startGameBtn.style.display = 'none';
 	$currentRound.textContent = `Round ${round + 1}`;
+	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round]}, 80px)`;
 
 	let count = 0;
 	for (let col = 0; col < gridSize[round]; col++) {
@@ -20,7 +22,6 @@ const displayBoard = () => {
 			const tileEl = document.createElement('div');
 
 			tileEl.dataset.tileId = count;
-			tileEl.addEventListener('click', userClick);
 			tileEl.classList.add('grid-tile');
 			$gameBoard.append(tileEl);
 			count++;
@@ -32,35 +33,25 @@ const displayBoard = () => {
 
 const startGame = () => {
 	// array populated by random numbers
-	const gridTilesArr = coloredTilesArr();
-
+	coloredTilesArr();
 	// color the tiles with the arr numbers
-	colorTiles(bubbleSort(gridTilesArr));
-
-	// capture user clicks and color tile
-
-	// insert user click number in arr
-
-	// match random num arr to user click array
+	colorTiles(bubbleSort(correctGridTile));
 };
 
 const coloredTilesArr = () => {
-	const gridArr = [];
 	const randomNumberRange = gridSize[round] * gridSize[round];
 	const loopRunTime = gridSize[round] * 2;
 
 	for (let i = 0; i < loopRunTime; i++) {
 		let randomNum = Math.floor(Math.random() * randomNumberRange);
-		let isNumberInArr = gridArr.includes(randomNum);
+		let isNumberInArr = correctGridTile.includes(randomNum);
 
 		if (isNumberInArr) {
 			i--;
 		} else {
-			gridArr.push(randomNum);
+			correctGridTile.push(randomNum);
 		}
 	}
-
-	return gridArr;
 };
 
 const colorTiles = (coloredTiles) => {
@@ -86,10 +77,15 @@ const colorTiles = (coloredTiles) => {
 			clearInterval(myInterval);
 
 			setTimeout(() => {
-				removeColorFromTiles(newArr);
-			}, 3500);
+				clearGameBoard(newArr);
+
+				// capture user selections
+				tileList.forEach((tile) => {
+					tile.addEventListener('click', captureUserClick);
+				});
+			}, 500);
 		}
-	}, 1000);
+	}, 500);
 };
 
 const bubbleSort = (arr) => {
@@ -110,16 +106,27 @@ const bubbleSort = (arr) => {
 	return arr;
 };
 
-const removeColorFromTiles = (coloredArr) => {
-	console.log(coloredArr);
+const clearGameBoard = (coloredArr) => {
 	coloredArr.forEach((tile) => {
 		tile.classList.remove('active');
 	});
 };
 
-const userClick = (e) => {
-	console.log(e.target.dataset.tileId);
-	console.log('click');
+const captureUserClick = (e) => {
+	const { tileId } = e.target.dataset;
+	const tile = e.path[0];
+	tile.classList.add('user-select');
+	checkSelection(tileId, tile);
+};
+
+const checkSelection = (tileId, tile) => {
+	console.log(tileId);
+	console.log(correctGridTile);
+	let exist = correctGridTile.includes(parseInt(tileId));
+
+	if (!exist) {
+		tile.classList.add('wronge-selection');
+	}
 };
 
 $startGameBtn.addEventListener('click', displayBoard);

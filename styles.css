@@ -63,8 +63,14 @@ main {
 	width: 80px;
 	height: 80px;
 	border: 2px solid black;
+	cursor: pointer;
 }
 
-.active {
+.active,
+.user-select {
 	background: blue;
+}
+
+.wronge-selection {
+	background: red;
 }
