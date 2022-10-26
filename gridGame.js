@@ -2,10 +2,12 @@ const $gameBoard = document.querySelector('.game-board');
 const $startGameBtn = document.querySelector('.startGame-btn');
 const $activeGameTitle = document.querySelector('#active-game');
 const $currentRound = document.querySelector('.current-round');
+const $lives = document.querySelector('.lives');
 
-let round = 2;
+let round = 0;
 let lives = 3;
 const gridSize = [4, 6, 8];
+// holds the correct grid pattern
 const correctGridTile = [];
 
 const displayBoard = () => {
@@ -115,18 +117,23 @@ const clearGameBoard = (coloredArr) => {
 const captureUserClick = (e) => {
 	const { tileId } = e.target.dataset;
 	const tile = e.path[0];
-	tile.classList.add('user-select');
+
+	console.log(tile, tileId);
+
 	checkSelection(tileId, tile);
 };
 
 const checkSelection = (tileId, tile) => {
 	console.log(tileId);
 	console.log(correctGridTile);
-	let exist = correctGridTile.includes(parseInt(tileId));
+	let isValid = correctGridTile.includes(parseInt(tileId));
 
-	if (!exist) {
+	if (!isValid) {
 		tile.classList.add('wronge-selection');
+		return;
 	}
+
+	tile.classList.add('user-select');
 };
 
 $startGameBtn.addEventListener('click', displayBoard);
