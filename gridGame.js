@@ -18,15 +18,15 @@ const displayBoard = () => {
 	$currentRound.textContent = `Round ${round + 1}`;
 	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round]}, 80px)`;
 
-	let count = 0;
+	let datasetCount = 0;
 	for (let col = 0; col < gridSize[round]; col++) {
 		for (let row = 0; row < gridSize[round]; row++) {
 			const tileEl = document.createElement('div');
 
-			tileEl.dataset.tileId = count;
+			tileEl.dataset.tileId = datasetCount;
 			tileEl.classList.add('grid-tile');
 			$gameBoard.append(tileEl);
-			count++;
+			datasetCount++;
 		}
 	}
 
@@ -85,9 +85,9 @@ const colorTiles = (coloredTiles) => {
 				tileList.forEach((tile) => {
 					tile.addEventListener('click', captureUserClick);
 				});
-			}, 500);
+			}, 3000);
 		}
-	}, 500);
+	}, 1000);
 };
 
 const bubbleSort = (arr) => {
@@ -137,3 +137,10 @@ const checkSelection = (tileId, tile) => {
 };
 
 $startGameBtn.addEventListener('click', displayBoard);
+
+// every time a user makes a selections check to see
+// if its wronge take a live off
+// else
+// return
+
+// when player completes the grid move on to next round
