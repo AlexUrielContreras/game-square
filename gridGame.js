@@ -6,7 +6,7 @@ const $lives = document.querySelector('.lives');
 const $gameOver = document.querySelector('.game-over');
 const $restartGameBtn = document.querySelector('#restart-game');
 
-let round = 0;
+let round = 1;
 let lives = 3;
 const gridSize = [4, 6, 8];
 // holds the correct grid pattern
@@ -147,6 +147,11 @@ const checkSelection = (tileId, tile) => {
 };
 
 function endGame() {
+	const tileList = document.querySelectorAll('.grid-tile');
+
+	tileList.forEach((tile) => {
+		tile.removeEventListener('click', captureUserClick);
+	});
 	$gameOver.style.visibility = 'visible';
 }
 
@@ -160,7 +165,6 @@ function restartGame() {
 
 	tileList.forEach((tile) => {
 		tile.classList.remove('user-select', 'wrong-selection');
-		tile.removeEventListener('click', captureUserClick);
 	});
 
 	$gameOver.style.visibility = 'hidden';
