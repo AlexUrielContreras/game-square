@@ -6,13 +6,20 @@ const $lives = document.querySelector('.lives');
 const $gameOver = document.querySelector('.game-over');
 const $restartGameBtn = document.querySelector('#restart-game');
 
-let round = 1;
+let round = 0;
 let lives = 3;
 const gridSize = [4, 6, 8];
 // holds the correct grid pattern
 let correctGridTile = [];
+let userSelectionTiles = [];
 
 const displayBoard = () => {
+	if (round !== 0) {
+		while ($gameBoard.hasChildNodes()) {
+			$gameBoard.removeChild($gameBoard.firstChild);
+		}
+	}
+
 	document.title = 'Grid Game';
 	$activeGameTitle.textContent = 'Grid Game';
 
@@ -121,6 +128,9 @@ const captureUserClick = (e) => {
 	const { tileId } = e.target.dataset;
 	const tile = e.path[0];
 
+	userSelectionTiles.push(tileId);
+	console.log(userSelectionTiles);
+
 	console.log(tile, tileId);
 
 	checkSelection(tileId, tile);
@@ -144,6 +154,10 @@ const checkSelection = (tileId, tile) => {
 	}
 
 	tile.classList.add('user-select');
+
+	if (userSelectionTiles.length === correctGridTile.length) {
+		nextRound();
+	}
 };
 
 function endGame() {
@@ -162,6 +176,7 @@ function restartGame() {
 	$lives.textContent = `Lives: ${lives}`;
 
 	correctGridTile = [];
+	userSelectionTiles = [];
 
 	tileList.forEach((tile) => {
 		tile.classList.remove('user-select', 'wrong-selection');
@@ -171,6 +186,14 @@ function restartGame() {
 
 	startGame();
 }
+
+const nextRound = () => {
+	console.log('Round 2');
+
+	userSelectionTiles = [];
+	round++;
+	displayBoard();
+};
 
 $startGameBtn.addEventListener('click', displayBoard);
 $restartGameBtn.addEventListener('click', restartGame);
