@@ -17,6 +17,7 @@ const displayBoard = () => {
 	$startGameBtn.style.display = 'none';
 	$currentRound.textContent = `Round ${round + 1}`;
 	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round]}, 80px)`;
+	$lives.textContent = lives;
 
 	let datasetCount = 0;
 	for (let col = 0; col < gridSize[round]; col++) {
@@ -130,11 +131,20 @@ const checkSelection = (tileId, tile) => {
 
 	if (!isValid) {
 		tile.classList.add('wronge-selection');
+		lives--;
+		if (lives !== 0) {
+			$lives.textContent = lives;
+		} else {
+			endGame();
+		}
+
 		return;
 	}
 
 	tile.classList.add('user-select');
 };
+
+const endGame = () => {};
 
 $startGameBtn.addEventListener('click', displayBoard);
 
