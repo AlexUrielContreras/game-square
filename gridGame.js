@@ -19,7 +19,11 @@ const displayBoard = () => {
 	$startGameBtn.style.display = 'none';
 	$currentRound.textContent = `Round ${round + 1}`;
 	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round]}, 80px)`;
+<<<<<<< HEAD
 	$lives.textContent = `Lives: ${lives}`;
+=======
+	$lives.textContent = lives;
+>>>>>>> d83e3a4d520176f1cdc7a39b26e4669a3cd6db44
 
 	let datasetCount = 0;
 	for (let col = 0; col < gridSize[round]; col++) {
