@@ -141,6 +141,4 @@ $startGameBtn.addEventListener('click', displayBoard);
 // every time a user makes a selections check to see
 // if its wronge take a live off
 // else
-// return
-
-// when player completes the grid move on to next round
+// mive on to next round
