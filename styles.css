@@ -71,6 +71,11 @@ main {
 	background: blue;
 }
 
-.wronge-selection {
+.wrong-selection {
 	background: red;
+}
+
+.game-over {
+	margin-top: 15vh;
+	visibility: hidden;
 }

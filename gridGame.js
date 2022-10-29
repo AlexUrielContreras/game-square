@@ -3,12 +3,14 @@ const $startGameBtn = document.querySelector('.startGame-btn');
 const $activeGameTitle = document.querySelector('#active-game');
 const $currentRound = document.querySelector('.current-round');
 const $lives = document.querySelector('.lives');
+const $gameOver = document.querySelector('.game-over');
+const $restartGameBtn = document.querySelector('#restart-game');
 
 let round = 0;
 let lives = 3;
 const gridSize = [4, 6, 8];
 // holds the correct grid pattern
-const correctGridTile = [];
+let correctGridTile = [];
 
 const displayBoard = () => {
 	document.title = 'Grid Game';
@@ -17,7 +19,7 @@ const displayBoard = () => {
 	$startGameBtn.style.display = 'none';
 	$currentRound.textContent = `Round ${round + 1}`;
 	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round]}, 80px)`;
-	$lives.textContent = lives;
+	$lives.textContent = `Lives: ${lives}`;
 
 	let datasetCount = 0;
 	for (let col = 0; col < gridSize[round]; col++) {
@@ -130,11 +132,11 @@ const checkSelection = (tileId, tile) => {
 	let isValid = correctGridTile.includes(parseInt(tileId));
 
 	if (!isValid) {
-		tile.classList.add('wronge-selection');
+		tile.classList.add('wrong-selection');
 		lives--;
-		if (lives !== 0) {
-			$lives.textContent = lives;
-		} else {
+		$lives.textContent = `Lives: ${lives}`;
+
+		if (lives === 0) {
 			endGame();
 		}
 
@@ -144,9 +146,29 @@ const checkSelection = (tileId, tile) => {
 	tile.classList.add('user-select');
 };
 
-const endGame = () => {};
+function endGame() {
+	$gameOver.style.visibility = 'visible';
+}
+
+function restartGame() {
+	const tileList = document.querySelectorAll('.grid-tile');
+
+	lives = 3;
+	$lives.textContent = `Lives: ${lives}`;
+
+	correctGridTile = [];
+
+	tileList.forEach((tile) => {
+		tile.classList.remove('user-selection', 'wrong-selection');
+	});
+
+	$gameOver.style.visibility = 'hidden';
+
+	startGame();
+}
 
 $startGameBtn.addEventListener('click', displayBoard);
+$restartGameBtn.addEventListener('click', restartGame);
 
 // every time a user makes a selections check to see
 // if its wronge take a live off
