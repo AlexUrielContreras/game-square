@@ -79,3 +79,8 @@ main {
 	margin-top: 15vh;
 	visibility: hidden;
 }
+
+.victory {
+	font-size: 3rem;
+	text-align: center;
+}

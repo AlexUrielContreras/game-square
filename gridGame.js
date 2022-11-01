@@ -71,6 +71,7 @@ const getColoredTilesArr = () => {
 };
 
 const colorTiles = (coloredTiles) => {
+	console.log(coloredTiles);
 	const tileList = document.querySelectorAll('.grid-tile');
 
 	let matchingTiles = [];
@@ -98,9 +99,9 @@ const colorTiles = (coloredTiles) => {
 				tileList.forEach((tile) => {
 					tile.addEventListener('click', captureUserClick);
 				});
-			}, 3000);
+			}, 500);
 		}
-	}, 1000);
+	}, 500);
 };
 
 const bubbleSort = (tileArr) => {
@@ -153,7 +154,11 @@ const checkSelection = (tileId, tile) => {
 	userSelectionTiles.push(tileId);
 
 	if (userSelectionTiles.length === correctGridTile.length) {
-		nextRound();
+		if (round === 3) {
+			victory();
+		} else {
+			nextRound();
+		}
 	}
 };
 
@@ -191,6 +196,20 @@ const nextRound = () => {
 
 	round++;
 	displayBoard();
+};
+
+const victory = () => {
+	console.log('Yay!!!!!!!!! You won');
+	$gameBoard.remove();
+
+	const victoryDivEl = document.createElement('section');
+	victoryDivEl.classList.add('victory');
+
+	const victoryTitleEl = document.createElement('h2');
+	victoryTitleEl.textContent = 'You Win !!!!!!';
+
+	victoryDivEl.append(victoryTitleEl);
+	document.body.append(victoryDivEl);
 };
 
 $startGameBtn.addEventListener('click', displayBoard);
