@@ -6,7 +6,7 @@ const $lives = document.querySelector('.lives');
 const $gameOver = document.querySelector('.game-over');
 const $restartGameBtn = document.querySelector('#restart-game');
 
-let round = 0;
+let round = 1;
 let lives = 3;
 const gridSize = [4, 6, 8];
 // holds the correct grid pattern
@@ -24,13 +24,13 @@ const displayBoard = () => {
 	$activeGameTitle.textContent = 'Grid Game';
 
 	$startGameBtn.style.display = 'none';
-	$currentRound.textContent = `Round ${round + 1}`;
-	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round]}, 80px)`;
+	$currentRound.textContent = `Round ${round}`;
+	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round - 1]}, 80px)`;
 	$lives.textContent = `Lives: ${lives}`;
 
 	let datasetCount = 0;
-	for (let col = 0; col < gridSize[round]; col++) {
-		for (let row = 0; row < gridSize[round]; row++) {
+	for (let col = 0; col < gridSize[round - 1]; col++) {
+		for (let row = 0; row < gridSize[round - 1]; row++) {
 			const tileEl = document.createElement('div');
 
 			tileEl.dataset.tileId = datasetCount;
@@ -51,8 +51,12 @@ const startGame = () => {
 };
 
 const coloredTilesArr = () => {
-	const randomNumberRange = gridSize[round] * gridSize[round];
-	const loopRunTime = gridSize[round] * 2;
+	const randomNumberRange = gridSize[round - 1] * gridSize[round - 1];
+
+	// round 3 has to many filled tiles so when round 3 is reached lower the amount of colored tiles
+	let loopRunTime = round === 3 ? gridSize[round - 1] * 3 : gridSize[round - 1] * 2;
+
+	console.log(loopRunTime, gridSize[round - 1], round)
 
 	for (let i = 0; i < loopRunTime; i++) {
 		let randomNum = Math.floor(Math.random() * randomNumberRange);
@@ -128,9 +132,6 @@ const captureUserClick = (e) => {
 	const { tileId } = e.target.dataset;
 	const tile = e.path[0];
 
-	userSelectionTiles.push(tileId);
-	console.log(userSelectionTiles);
-
 	console.log(tile, tileId);
 
 	checkSelection(tileId, tile);
@@ -154,6 +155,7 @@ const checkSelection = (tileId, tile) => {
 	}
 
 	tile.classList.add('user-select');
+	userSelectionTiles.push(tileId);
 
 	if (userSelectionTiles.length === correctGridTile.length) {
 		nextRound();
@@ -190,7 +192,9 @@ function restartGame() {
 const nextRound = () => {
 	console.log('Round 2');
 
+	correctGridTile = [];
 	userSelectionTiles = [];
+
 	round++;
 	displayBoard();
 };
