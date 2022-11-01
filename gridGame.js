@@ -71,7 +71,6 @@ const getColoredTilesArr = () => {
 };
 
 const colorTiles = (coloredTiles) => {
-	console.log(coloredTiles);
 	const tileList = document.querySelectorAll('.grid-tile');
 
 	let matchingTiles = [];
@@ -199,7 +198,6 @@ const nextRound = () => {
 };
 
 const victory = () => {
-	console.log('Yay!!!!!!!!! You won');
 	$gameBoard.remove();
 
 	const victoryDivEl = document.createElement('section');
