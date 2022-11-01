@@ -8,12 +8,14 @@ const $restartGameBtn = document.querySelector('#restart-game');
 
 let round = 1;
 let lives = 3;
-const gridSize = [4, 6, 8];
+const gridSizeArr = [4, 6, 8];
 // holds the correct grid pattern
 let correctGridTile = [];
+// holds the user selected tiles
 let userSelectionTiles = [];
 
 const displayBoard = () => {
+	// clears the board when player moves on to next round
 	if (round !== 0) {
 		while ($gameBoard.hasChildNodes()) {
 			$gameBoard.removeChild($gameBoard.firstChild);
@@ -25,12 +27,12 @@ const displayBoard = () => {
 
 	$startGameBtn.style.display = 'none';
 	$currentRound.textContent = `Round ${round}`;
-	$gameBoard.style.gridTemplateColumns = `repeat(${gridSize[round - 1]}, 80px)`;
+	$gameBoard.style.gridTemplateColumns = `repeat(${gridSizeArr[round - 1]}, 80px)`;
 	$lives.textContent = `Lives: ${lives}`;
 
 	let datasetCount = 0;
-	for (let col = 0; col < gridSize[round - 1]; col++) {
-		for (let row = 0; row < gridSize[round - 1]; row++) {
+	for (let col = 0; col < gridSizeArr[round - 1]; col++) {
+		for (let row = 0; row < gridSizeArr[round - 1]; row++) {
 			const tileEl = document.createElement('div');
 
 			tileEl.dataset.tileId = datasetCount;
@@ -45,18 +47,16 @@ const displayBoard = () => {
 
 const startGame = () => {
 	// array populated by random numbers
-	coloredTilesArr();
+	getColoredTilesArr();
 	// color the tiles with the arr numbers
 	colorTiles(bubbleSort(correctGridTile));
 };
 
-const coloredTilesArr = () => {
-	const randomNumberRange = gridSize[round - 1] * gridSize[round - 1];
+const getColoredTilesArr = () => {
+	const randomNumberRange = gridSizeArr[round - 1] * gridSizeArr[round - 1];
 
-	// round 3 has to many filled tiles so when round 3 is reached lower the amount of colored tiles
-	let loopRunTime = round === 3 ? gridSize[round - 1] * 3 : gridSize[round - 1] * 2;
-
-	console.log(loopRunTime, gridSize[round - 1], round)
+	// when round 3 is reached increase the amount of colored tiles
+	let loopRunTime = round === 3 ? gridSizeArr[round - 1] * 3 : gridSizeArr[round - 1] * 2;
 
 	for (let i = 0; i < loopRunTime; i++) {
 		let randomNum = Math.floor(Math.random() * randomNumberRange);
@@ -71,29 +71,28 @@ const coloredTilesArr = () => {
 };
 
 const colorTiles = (coloredTiles) => {
-	console.log(coloredTiles);
 	const tileList = document.querySelectorAll('.grid-tile');
 
-	let newArr = [];
+	let matchingTiles = [];
 
 	for (let i = 0; i < tileList.length; i++) {
 		let exist = coloredTiles.includes(i);
 
 		if (exist) {
-			newArr.push(tileList[i]);
+			matchingTiles.push(tileList[i]);
 		}
 	}
 
 	let count = 0;
 	let myInterval = setInterval(() => {
-		newArr[count].classList.add('active');
+		matchingTiles[count].classList.add('active');
 		count++;
 
-		if (count >= newArr.length) {
+		if (count >= matchingTiles.length - 1) {
 			clearInterval(myInterval);
 
 			setTimeout(() => {
-				clearGameBoard(newArr);
+				clearGameBoard(matchingTiles);
 
 				// capture user selections
 				tileList.forEach((tile) => {
@@ -104,22 +103,22 @@ const colorTiles = (coloredTiles) => {
 	}, 1000);
 };
 
-const bubbleSort = (arr) => {
+const bubbleSort = (tileArr) => {
 	let sorted = false;
 
 	while (!sorted) {
 		sorted = true;
-		for (let i = 0; i < arr.length - 1; i++) {
-			if (arr[i] > arr[i + 1]) {
-				let temp = arr[i];
+		for (let i = 0; i < tileArr.length - 1; i++) {
+			if (tileArr[i] > tileArr[i + 1]) {
+				let temp = tileArr[i];
 
-				arr[i] = arr[i + 1];
-				arr[i + 1] = temp;
+				tileArr[i] = tileArr[i + 1];
+				tileArr[i + 1] = temp;
 				sorted = false;
 			}
 		}
 	}
-	return arr;
+	return tileArr;
 };
 
 const clearGameBoard = (coloredArr) => {
@@ -132,14 +131,10 @@ const captureUserClick = (e) => {
 	const { tileId } = e.target.dataset;
 	const tile = e.path[0];
 
-	console.log(tile, tileId);
-
 	checkSelection(tileId, tile);
 };
 
 const checkSelection = (tileId, tile) => {
-	console.log(tileId);
-	console.log(correctGridTile);
 	let isValid = correctGridTile.includes(parseInt(tileId));
 
 	if (!isValid) {
@@ -162,18 +157,19 @@ const checkSelection = (tileId, tile) => {
 	}
 };
 
-function endGame() {
+const endGame = () => {
 	const tileList = document.querySelectorAll('.grid-tile');
 
 	tileList.forEach((tile) => {
 		tile.removeEventListener('click', captureUserClick);
 	});
 	$gameOver.style.visibility = 'visible';
-}
+};
 
-function restartGame() {
+const restartGame = () => {
 	const tileList = document.querySelectorAll('.grid-tile');
 
+	round = 1;
 	lives = 3;
 	$lives.textContent = `Lives: ${lives}`;
 
@@ -186,12 +182,10 @@ function restartGame() {
 
 	$gameOver.style.visibility = 'hidden';
 
-	startGame();
-}
+	displayBoard();
+};
 
 const nextRound = () => {
-	console.log('Round 2');
-
 	correctGridTile = [];
 	userSelectionTiles = [];
 
