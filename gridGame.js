@@ -71,6 +71,7 @@ const getColoredTilesArr = () => {
 };
 
 const colorTiles = (coloredTiles) => {
+	console.log(coloredTiles);
 	const tileList = document.querySelectorAll('.grid-tile');
 
 	let matchingTiles = [];
@@ -88,7 +89,7 @@ const colorTiles = (coloredTiles) => {
 		matchingTiles[count].classList.add('active');
 		count++;
 
-		if (count >= matchingTiles.length - 1) {
+		if (count === matchingTiles.length) {
 			clearInterval(myInterval);
 
 			setTimeout(() => {
@@ -98,9 +99,9 @@ const colorTiles = (coloredTiles) => {
 				tileList.forEach((tile) => {
 					tile.addEventListener('click', captureUserClick);
 				});
-			}, 500);
+			}, 3000);
 		}
-	}, 500);
+	}, 1000);
 };
 
 const bubbleSort = (tileArr) => {
