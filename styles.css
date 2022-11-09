@@ -10,32 +10,32 @@ html {
 body {
 	min-height: 100%;
 	background: hsla(313, 96%, 53%, 1);
-	background: linear-gradient(
-		45deg,
-		hsla(313, 96%, 53%, 1) 0%,
-		hsla(0, 5%, 28%, 1) 0%,
-		hsla(193, 73%, 53%, 1) 100%
-	);
+	background: linear-gradient(45deg, hsla(313, 96%, 53%, 1) 0%, hsla(0, 5%, 28%, 1) 0%, hsla(193, 73%, 53%, 1) 100%);
 	font-family: 'Rubik', sans-serif;
 }
 
 header {
 	display: flex;
 	justify-content: space-around;
-	align-items: flex-end;
+	align-items: baseline;
 }
 
 .header-title {
 	font-size: 3.2rem;
 }
 
-#active-game {
-	font-size: 1.8rem;
-}
-
 main {
 	text-align: center;
 	margin-top: 4%;
+}
+
+.game-info {
+	display: flex;
+	font-size: 0.9rem;
+}
+
+.game-info h2 {
+	margin-right: 1vw;
 }
 
 .startGame-btn {
@@ -49,14 +49,10 @@ main {
 	transform: translate(-50%, -50%);
 }
 
-.current-round {
-	font-size: 3rem;
-}
-
 .game-board {
 	display: grid;
 	justify-content: center;
-	margin-top: 3%;
+	margin-top: 1%;
 }
 
 .grid-tile {
@@ -76,8 +72,17 @@ main {
 }
 
 .game-over {
-	margin-top: 15vh;
+	font-size: 1.6rem;
+	margin: 5vh 0;
 	visibility: hidden;
+}
+
+.game-over button {
+	margin-top: 1vh;
+	padding: 0.5rem 1.5rem;
+	font-size: 1rem;
+	background: none;
+	cursor: pointer;
 }
 
 .victory {
