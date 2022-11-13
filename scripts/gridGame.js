@@ -6,6 +6,8 @@ const $lives = document.querySelector('.lives');
 const $gameOver = document.querySelector('.game-over');
 const $restartGameBtn = document.querySelector('#restart-game');
 
+import bubbleSort from './bubbleSort.js'
+
 let round = 1;
 let lives = 3;
 const gridSizeArr = [4, 6, 8];
@@ -104,23 +106,7 @@ const colorTiles = (coloredTiles) => {
 	}, 1000);
 };
 
-const bubbleSort = (tileArr) => {
-	let sorted = false;
 
-	while (!sorted) {
-		sorted = true;
-		for (let i = 0; i < tileArr.length - 1; i++) {
-			if (tileArr[i] > tileArr[i + 1]) {
-				let temp = tileArr[i];
-
-				tileArr[i] = tileArr[i + 1];
-				tileArr[i + 1] = temp;
-				sorted = false;
-			}
-		}
-	}
-	return tileArr;
-};
 
 const clearGameBoard = (coloredArr) => {
 	coloredArr.forEach((tile) => {
