@@ -55,6 +55,13 @@ main {
 	margin-top: 1%;
 }
 
+.display-none {
+	display: none
+}
+
+
+/******** GRID GAME STYLES ********/
+
 .grid-tile {
 	width: 80px;
 	height: 80px;
@@ -88,4 +95,12 @@ main {
 .victory {
 	font-size: 3rem;
 	text-align: center;
+}
+
+/********* TIC TAK TOE STYLES *********/
+
+.ttt-tiles {
+	border: 1px solid black;
+	min-width: 150px;
+	min-height: 150px
 }
